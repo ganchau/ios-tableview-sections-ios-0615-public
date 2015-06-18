@@ -7,6 +7,7 @@
 //
 
 #import "FISTableViewController.h"
+#import "FISStudent.h"
 
 @interface FISTableViewController ()
 
@@ -16,32 +17,81 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    FISStudent *Malcolm = [[FISStudent alloc] initWithName:@"Malcolm"
+                                              favoriteFood:@"Pizza"
+                                             favoriteColor:@"White"
+                                     favoriteMusicalArtist:@"Drake"
+                                              favoriteGame:@"The Last of Us"];
     
+    FISStudent *Jane = [[FISStudent alloc] initWithName:@"Jane"
+                                           favoriteFood:@"Pad Thai"
+                                          favoriteColor:@"Seafoam green"
+                                  favoriteMusicalArtist:@"Taylor Swift"
+                                           favoriteGame:@"Threes!"];
+    
+    FISStudent *Slim = [[FISStudent alloc] initWithName:@"Slim"
+                                           favoriteFood:@"Steak"
+                                          favoriteColor:@"Navy blue"
+                                  favoriteMusicalArtist:@"Tupac"
+                                           favoriteGame:@"FFVII"];
+    
+    FISStudent *Evelynn = [[FISStudent alloc] initWithName:@"Evelynn"
+                                              favoriteFood:@"Sashimi"
+                                             favoriteColor:@"Pink"
+                                     favoriteMusicalArtist:@"Beyoncé"
+                                              favoriteGame:@"Chess"];
+    
+    self.students = @[Malcolm, Jane, Slim, Evelynn];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return (NSInteger)self.students.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    FISStudent *student = self.students[(NSUInteger)section];
+    return (NSInteger)student.favoriteThings.count;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"expandingCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    
+    FISStudent *student = self.students[(NSUInteger)section];
+    
+    NSDictionary *favoriteThing = student.favoriteThings[(NSUInteger)row];
+    cell.detailTextLabel.text = [[favoriteThing allValues] componentsJoinedByString:@""];
+    cell.textLabel.text = [[favoriteThing allKeys] componentsJoinedByString:@""];
+    cell.textLabel.textColor = [UIColor lightGrayColor];
     
     return cell;
 }
-*/
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    FISStudent *student = self.students[(NSUInteger)section];
+    return student.name;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 35;
+}
 
 /*
 // Override to support conditional editing of the table view.
